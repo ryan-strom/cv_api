@@ -1,6 +1,7 @@
 # import the necessary packages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from matplotlib import pyplot as plt
 import numpy as np
 import urllib
 import json
@@ -38,7 +39,7 @@ def detect(request):
 
 		# convert the image to grayscale, load the face cascade detector,
 		# and detect faces in the image
-		# image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+		image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 		detector = cv2.CascadeClassifier(FACE_DETECTOR_PATH)
 		rects = detector.detectMultiScale(image, scaleFactor=1.1, minNeighbors=5,
 			minSize=(30, 30), flags=cv2.cv.CV_HAAR_SCALE_IMAGE)
@@ -53,26 +54,23 @@ def detect(request):
 	return JsonResponse(data)
 
 def findContours(request):
-	# im = cv2.imread('star.png')
-	# imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
-	# ret,thresh = cv2.threshold(imgray,127,255,0)
-	# contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-	# cv2.drawContours(im, contours, -1, (123,255,31), 3)
-    #
-    #
-    #
-	# jsonData = {
-	# 	#"contours":contours
-	# }
+	im = cv2.imread('flower2.jpg')
+	initial_mean_color = cv2.mean(im)
 
-	img = cv2.imread('flower.png',0)
+	imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
+	ret,thresh = cv2.threshold(imgray,127,255,0)
+	contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+	#cv2.drawContours(im, contours, -1, (123,255,31), 3)
 
-	ret,thresh = cv2.threshold(img,125,255,0)
-	contours,hierarchy = cv2.findContours(thresh, 1, 2)
+
+	# img = cv2.imread('octa.png')
+	# ret,thresh = cv2.threshold(img,127,255,0)
+	# contours,hierarchy = cv2.findContours(thresh, 1, 2)
 
 	cnt = contours[0]
-	M = cv2.moments(cnt)
 
+
+	M = cv2.moments(cnt)
 	#centroids
 	cx = int(M['m10']/M['m00'])
 	cy = int(M['m01']/M['m00'])
@@ -102,11 +100,32 @@ def findContours(request):
 		"perimeter":perimeter,
 		"approx":approx,
 		"approx-length":len(approx),
-		"points":len(approx)/2,
 		"hull":hull,
 		"hull-length":len(hull),
-		"is-convour-convx":isContourConvex
+		"is-convour-convx":isContourConvex,
+		"initial_mean_color":initial_mean_color
 	}
+
+	return JsonResponse(jsonData)
+
+def featureDetection(request):
+	jsonData = {
+		"success":False
+	}
+	img = cv2.imread('flower.png')
+	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
+	corners = cv2.goodFeaturesToTrack(gray,25,0.01,10)
+	corners = np.int_(corners)
+
+	for i in corners:
+		x,y = i.ravel()
+		cv2.circle(img,(x,y),3,255,-1)
+
+	plt.imshow(img),plt.show()
+
+
+	jsonData.update({"success":True})
 
 	return JsonResponse(jsonData)
 

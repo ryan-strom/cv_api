@@ -8,6 +8,8 @@ urlpatterns = patterns('',
 
     url(r'^flower_detection/detect/contours/$', 'flower_detection.views.findContours'),
 
+    url(r'^flower_detection/detect/features/$', 'flower_detection.views.featureDetection'),
+
     # url(r'^$', 'cv_api.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
