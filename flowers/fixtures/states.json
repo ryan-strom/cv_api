@@ -1,0 +1,10 @@
+[
+  {
+    "fields": {
+      "name": "New Jersey",
+      "abbreviation":"NJ"
+    },
+    "model": "flowers.states",
+    "pk": 1
+  }
+]

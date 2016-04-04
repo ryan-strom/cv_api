@@ -1,12 +1,17 @@
 # import the necessary packages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.http import HttpResponse
 from matplotlib import pyplot as plt
+from flower_detection.shapedetector import ShapeDetector
+from flower_detection.colorlabeler import ColorLabeler
 import numpy as np
 import urllib
 import json
 import cv2
 import os
+import argparse
+import imutils
 
 # define the path to the face detector
 FACE_DETECTOR_PATH = "{base_path}/cascades/haarcascade_frontalface_default.xml".format(
@@ -108,6 +113,138 @@ def findContours(request):
 
 	return JsonResponse(jsonData)
 
+def shapes(request):
+
+	# load the image, convert it to grayscale, blur it slightly,
+	# and threshold it
+	image = cv2.imread('octa.png')
+	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+	blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+	thresh = cv2.threshold(blurred, 60, 255, cv2.THRESH_BINARY)[1]
+	result = 'result.png'
+
+	# find contours in the thresholded image
+	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+		cv2.CHAIN_APPROX_SIMPLE)
+	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+	arr = []
+	# loop over the contours
+	for c in cnts:
+		# compute the center of the contour
+		M = cv2.moments(c)
+		if (M["m00"] == 0):
+			M["m00"]=1
+		cX = int(M["m10"] / M["m00"])
+		cY = int(M["m01"] / M["m00"])
+
+		# draw the contour and center of the shape on the image
+
+		cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+		cv2.circle(image, (cX, cY), 7, (0, 255, 0), -1)
+		cv2.putText(image, "center", (cX - 20, cY - 20),
+			cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
+
+
+	cv2.imwrite(result, image)
+	result_data = open(result, "rb").read()
+	return HttpResponse(result_data, content_type="image/png")
+
+def shapes2(request):
+
+	# load the image and resize it to a smaller factor so that
+	# the shapes can be approximated better
+	image = cv2.imread('LcKe78Bca.png')
+	resized = imutils.resize(image, width=300)
+	ratio = image.shape[0] / float(resized.shape[0])
+
+	# convert the resized image to grayscale, blur it slightly,
+	# and threshold it
+	gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+	blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+	thresh = cv2.threshold(blurred, 60, 255, cv2.THRESH_BINARY)[1]
+
+	# find contours in the thresholded image and initialize the
+	# shape detector
+	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+		cv2.CHAIN_APPROX_SIMPLE)
+	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+	sd = ShapeDetector()
+
+	# loop over the contours
+	for c in cnts:
+		# compute the center of the contour, then detect the name of the
+		# shape using only the contour
+		M = cv2.moments(c)
+
+		cX = int((M["m10"] / M["m00"]) * ratio)
+		cY = int((M["m01"] / M["m00"]) * ratio)
+		shape = sd.detect(c)
+
+		# multiply the contour (x, y)-coordinates by the resize ratio,
+		# then draw the contours and the name of the shape on the image
+		c=c.astype(np.float_)
+		c *= ratio
+		c=c.astype(np.int32)
+		cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+		cv2.putText(image, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+			0.5, (60, 255, 123), 2)
+
+	result = 'result.png'
+	cv2.imwrite(result, image)
+	result_data = open(result, "rb").read()
+	return HttpResponse(result_data, content_type="image/png")
+
+def shapes3(request):
+	# load the image and resize it to a smaller factor so that
+	# the shapes can be approximated better
+	image = cv2.imread('tri.png')
+	resized = imutils.resize(image, width=300)
+	ratio = image.shape[0] / float(resized.shape[0])
+
+	# blur the resized image slightly, then convert it to both
+	# grayscale and the L*a*b* color spaces
+	blurred = cv2.GaussianBlur(resized, (5, 5), 0)
+	gray = cv2.cvtColor(blurred, cv2.COLOR_BGR2GRAY)
+	lab = cv2.cvtColor(blurred, cv2.COLOR_BGR2LAB)
+	thresh = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY)[1]
+
+	# find contours in the thresholded image
+	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+		cv2.CHAIN_APPROX_SIMPLE)
+	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+
+	# initialize the shape detector and color labeler
+	sd = ShapeDetector()
+	cl = ColorLabeler()
+
+	# loop over the contours
+	for c in cnts:
+		# compute the center of the contour
+		M = cv2.moments(c)
+		cX = int((M["m10"] / M["m00"]) * ratio)
+		cY = int((M["m01"] / M["m00"]) * ratio)
+
+		# detect the shape of the contour and label the color
+		shape = sd.detect(c)
+		color = cl.label(lab, c)
+
+		# multiply the contour (x, y)-coordinates by the resize ratio,
+		# then draw the contours and the name of the shape and labeled
+		# color on the image
+		c=c.astype(np.float_)
+		c *= ratio
+		c=c.astype(np.int32)
+		text = "{} {}".format(color, shape)
+		cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+		cv2.putText(image, text, (cX, cY),
+			cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+	result = 'result.png'
+	cv2.imwrite(result, image)
+	result_data = open(result, "rb").read()
+	return HttpResponse(result_data, content_type="image/png")
+
 def featureDetection(request):
 	jsonData = {
 		"success":False
@@ -128,6 +265,7 @@ def featureDetection(request):
 	jsonData.update({"success":True})
 
 	return JsonResponse(jsonData)
+
 
 def _grab_image(path=None, stream=None, url=None):
 	# if the path is not None, then load the image from disk
@@ -152,3 +290,4 @@ def _grab_image(path=None, stream=None, url=None):
  
 	# return the image
 	return image
+
