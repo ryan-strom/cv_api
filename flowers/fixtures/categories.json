@@ -1,0 +1,16 @@
+[
+  {
+    "fields": {
+      "category": "monocot"
+    },
+    "model": "flowers.category",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "category": "dicot"
+    },
+    "model": "flowers.category",
+    "pk": 2
+  }
+]

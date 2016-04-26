@@ -1,0 +1,23 @@
+[
+  {
+    "fields": {
+      "duration": "annual"
+    },
+    "model": "flowers.duration",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "duration": "biennial"
+    },
+    "model": "flowers.duration",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "duration": "perennial"
+    },
+    "model": "flowers.duration",
+    "pk": 3
+  }
+]

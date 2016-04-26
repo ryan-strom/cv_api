@@ -1,52 +1,59 @@
 [
   {
     "fields": {
-      "color": "red"
+      "color": "blue"
     },
-    "model": "flowers.colors",
+    "model": "flowers.color",
     "pk": 1
   },
   {
     "fields": {
-      "color": "yellow"
+      "color": "brown"
     },
-    "model": "flowers.colors",
+    "model": "flowers.color",
     "pk": 2
-  },
-  {
-    "fields": {
-      "color": "yellow-green"
-    },
-    "model": "flowers.colors",
-    "pk": 3
-  },
-  {
-    "fields": {
-      "color": "white-gray"
-    },
-    "model": "flowers.colors",
-    "pk": 4
-  },
-  {
-    "fields": {
-      "color": "gray-green"
-    },
-    "model": "flowers.colors",
-    "pk": 5
   },
   {
     "fields": {
       "color": "green"
     },
-    "model": "flowers.colors",
+    "model": "flowers.color",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "color": "orange"
+    },
+    "model": "flowers.color",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "color": "purple"
+    },
+    "model": "flowers.color",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "color": "red"
+    },
+    "model": "flowers.color",
     "pk": 6
   },
   {
     "fields": {
-      "color": "dark green"
+      "color": "white"
     },
-    "model": "flowers.colors",
+    "model": "flowers.color",
     "pk": 7
+  },
+  {
+    "fields": {
+      "color": "yellow"
+    },
+    "model": "flowers.color",
+    "pk": 8
   }
 ]
 

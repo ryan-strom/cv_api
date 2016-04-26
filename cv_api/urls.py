@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 
     url(r'^flower_detection/shapes2/$', 'flower_detection.views.shapes2'),
 
-    url(r'^flower_detection/shapes3/$', 'flower_detection.views.shapes3'),
+    url(r'^flower_detection/shapes3', 'flower_detection.views.shapes3'),
 
     url(r'^flower_detection/detect/contours/$', 'flower_detection.views.findContours'),
 
@@ -19,6 +19,18 @@ urlpatterns = patterns('',
 
     # url(r'^$', 'cv_api.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
+
+    url(r'^species/$', 'flowers.views.getSpecies'),
+
+    url(r'^species/(?P<id>[0-9]+)', 'flowers.views.getSpecies'),
+
+    url(r'^species/create', 'flowers.views.postSpecies'),
+
+    url(r'^species/find', 'flowers.views.findSpecies'),
+
+    url(r'^species/csv', 'flowers.views.csvToDB'),
+
+
 
     url(r'^admin/', include(admin.site.urls)),
 )

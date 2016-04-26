@@ -4,7 +4,7 @@
       "name": "New Jersey",
       "abbreviation":"NJ"
     },
-    "model": "flowers.states",
+    "model": "flowers.state",
     "pk": 1
   }
 ]

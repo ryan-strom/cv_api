@@ -1,0 +1,30 @@
+[
+  {
+    "fields": {
+      "toxicity": "none"
+    },
+    "model": "flowers.toxicity",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "toxicity": "slight"
+    },
+    "model": "flowers.toxicity",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "toxicity": "moderate"
+    },
+    "model": "flowers.toxicity",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "toxicity": "severe"
+    },
+    "model": "flowers.toxicity",
+    "pk": 4
+  }
+]

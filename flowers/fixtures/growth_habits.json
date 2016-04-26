@@ -1,0 +1,44 @@
+[
+  {
+    "fields": {
+      "growth_habit": "forb/herb"
+    },
+    "model": "flowers.growthhabit",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "growth_habit": "graminoid"
+    },
+    "model": "flowers.growthhabit",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "growth_habit": "shrub"
+    },
+    "model": "flowers.growthhabit",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "growth_habit": "subshrub"
+    },
+    "model": "flowers.growthhabit",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "growth_habit": "tree"
+    },
+    "model": "flowers.growthhabit",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "growth_habit": "vine"
+    },
+    "model": "flowers.growthhabit",
+    "pk": 6
+  }
+]

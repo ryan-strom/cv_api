@@ -1,0 +1,23 @@
+[
+  {
+    "fields": {
+      "lifespan": "short"
+    },
+    "model": "flowers.lifespan",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "lifespan": "moderate"
+    },
+    "model": "flowers.lifespan",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "lifespan": "long"
+    },
+    "model": "flowers.lifespan",
+    "pk": 3
+  }
+]

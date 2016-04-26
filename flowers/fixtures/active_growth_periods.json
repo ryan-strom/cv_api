@@ -1,0 +1,30 @@
+[
+  {
+    "fields": {
+      "active_growth_period": "spring"
+    },
+    "model": "flowers.activegrowthperiod",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "active_growth_period": "summer"
+    },
+    "model": "flowers.activegrowthperiod",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "active_growth_period": "fall"
+    },
+    "model": "flowers.activegrowthperiod",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "active_growth_period": "winter"
+    },
+    "model": "flowers.activegrowthperiod",
+    "pk": 4
+  }
+]

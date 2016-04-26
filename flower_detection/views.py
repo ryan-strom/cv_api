@@ -7,10 +7,8 @@ from flower_detection.shapedetector import ShapeDetector
 from flower_detection.colorlabeler import ColorLabeler
 import numpy as np
 import urllib
-import json
 import cv2
 import os
-import argparse
 import imutils
 
 # define the path to the face detector
@@ -195,55 +193,64 @@ def shapes2(request):
 	result_data = open(result, "rb").read()
 	return HttpResponse(result_data, content_type="image/png")
 
-def shapes3(request):
-	# load the image and resize it to a smaller factor so that
-	# the shapes can be approximated better
-	image = cv2.imread('tri.png')
-	resized = imutils.resize(image, width=300)
-	ratio = image.shape[0] / float(resized.shape[0])
+@csrf_exempt #disable csrf
+def colorShapeFromImg(request):
+	if request.method == 'POST':
+		# load the image and resize it to a smaller factor so that
+		# the shapes can be approximated better
+		image = cv2.imdecode(np.fromstring(request.FILES['file'].read(), np.uint8), cv2.CV_LOAD_IMAGE_UNCHANGED)
 
-	# blur the resized image slightly, then convert it to both
-	# grayscale and the L*a*b* color spaces
-	blurred = cv2.GaussianBlur(resized, (5, 5), 0)
-	gray = cv2.cvtColor(blurred, cv2.COLOR_BGR2GRAY)
-	lab = cv2.cvtColor(blurred, cv2.COLOR_BGR2LAB)
-	thresh = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY)[1]
+		resized = imutils.resize(image, width=300)
+		ratio = image.shape[0] / float(resized.shape[0])
 
-	# find contours in the thresholded image
-	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
-		cv2.CHAIN_APPROX_SIMPLE)
-	cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+		# blur the resized image slightly, then convert it to both
+		# grayscale and the L*a*b* color spaces
+		blurred = cv2.GaussianBlur(resized, (5, 5), 0)
+		gray = cv2.cvtColor(blurred, cv2.COLOR_BGR2GRAY)
+		lab = cv2.cvtColor(blurred, cv2.COLOR_BGR2LAB)
+		thresh = cv2.threshold(gray, 60, 255, cv2.THRESH_BINARY)[1]
 
-	# initialize the shape detector and color labeler
-	sd = ShapeDetector()
-	cl = ColorLabeler()
+		# find contours in the thresholded image
+		cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+			cv2.CHAIN_APPROX_SIMPLE)
+		cnts = cnts[0] if imutils.is_cv2() else cnts[1]
 
-	# loop over the contours
-	for c in cnts:
-		# compute the center of the contour
-		M = cv2.moments(c)
-		cX = int((M["m10"] / M["m00"]) * ratio)
-		cY = int((M["m01"] / M["m00"]) * ratio)
+		# initialize the shape detector and color labeler
+		sd = ShapeDetector()
+		cl = ColorLabeler()
 
-		# detect the shape of the contour and label the color
-		shape = sd.detect(c)
-		color = cl.label(lab, c)
+		response = {}
 
-		# multiply the contour (x, y)-coordinates by the resize ratio,
-		# then draw the contours and the name of the shape and labeled
-		# color on the image
-		c=c.astype(np.float_)
-		c *= ratio
-		c=c.astype(np.int32)
-		text = "{} {}".format(color, shape)
-		cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
-		cv2.putText(image, text, (cX, cY),
-			cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+		# loop over the contours
+		for c in cnts:
+			# compute the center of the contour
+			M = cv2.moments(c)
+			cX = int((M["m10"] / M["m00"]) * ratio)
+			cY = int((M["m01"] / M["m00"]) * ratio)
 
-	result = 'result.png'
-	cv2.imwrite(result, image)
-	result_data = open(result, "rb").read()
-	return HttpResponse(result_data, content_type="image/png")
+			# detect the shape of the contour and label the color
+			shape = sd.detect(c)
+			color = cl.label(lab, c)
+
+			response['shape']=shape
+			response['color']=color
+
+			# multiply the contour (x, y)-coordinates by the resize ratio,
+			# then draw the contours and the name of the shape and labeled
+			# color on the image
+			c=c.astype(np.float_)
+			c *= ratio
+			c=c.astype(np.int32)
+			text = "{} {}".format(color, shape)
+			cv2.drawContours(image, [c], -1, (0, 255, 0), 2)
+			cv2.putText(image, text, (cX, cY),
+				cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+		return response
+		result = 'result.png'
+		cv2.imwrite(result, image)
+		result_data = open(result, "rb").read()
+		return HttpResponse(result_data, content_type="image/png")
 
 def featureDetection(request):
 	jsonData = {

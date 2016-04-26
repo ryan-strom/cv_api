@@ -1,0 +1,58 @@
+[
+  {
+    "fields": {
+      "growth_form": "bunch"
+    },
+    "model": "flowers.growthform",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "growth_form": "colonizing"
+    },
+    "model": "flowers.growthform",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "growth_form": "multiple stem"
+    },
+    "model": "flowers.growthform",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "growth_form": "single crown"
+    },
+    "model": "flowers.growthform",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "growth_form": "single stem"
+    },
+    "model": "flowers.growthform",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "growth_form": "stoloniferous"
+    },
+    "model": "flowers.growthform",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "growth_form": "thicket forming"
+    },
+    "model": "flowers.growthform",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "growth_form": "rhizomatous"
+    },
+    "model": "flowers.growthform",
+    "pk": 8
+  }
+]

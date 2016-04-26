@@ -1,0 +1,65 @@
+[
+  {
+    "fields": {
+      "shape": "climbing"
+    },
+    "model": "flowers.shape",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "shape": "decumbent"
+    },
+    "model": "flowers.shape",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "shape": "irregular"
+    },
+    "model": "flowers.shape",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "shape": "prostrate"
+    },
+    "model": "flowers.shape",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "shape": "semi-erect"
+    },
+    "model": "flowers.shape",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "shape": "vase"
+    },
+    "model": "flowers.shape",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "shape": "columnar"
+    },
+    "model": "flowers.shape",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "shape": "erect"
+    },
+    "model": "flowers.shape",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "shape": "rounded"
+    },
+    "model": "flowers.shape",
+    "pk": 9
+  }
+]

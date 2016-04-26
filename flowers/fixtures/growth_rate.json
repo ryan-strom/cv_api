@@ -1,0 +1,23 @@
+[
+  {
+    "fields": {
+      "growth_rate": "slow"
+    },
+    "model": "flowers.growthrate",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "growth_rate": "moderate"
+    },
+    "model": "flowers.growthrate",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "growth_rate": "rapid"
+    },
+    "model": "flowers.growthrate",
+    "pk": 3
+  }
+]
