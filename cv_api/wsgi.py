@@ -17,9 +17,6 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 
 import os
 import sys
-import time
-import traceback
-import signal
 
 sys.path.insert(0, '/opt/python/current/app')
 sys.path.append('/usr/local/lib/python2.7/site-packages')
@@ -32,8 +29,3 @@ try:
     print 'WSGI without exception'
 except Exception:
     print 'handling WSGI exception'
-    # Error loading applications
-    if 'mod_wsgi' in sys.modules:
-        traceback.print_exc()
-        os.kill(os.getpid(), signal.SIGINT)
-        time.sleep(2.5)
