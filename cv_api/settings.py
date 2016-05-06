@@ -62,9 +62,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'flowers',
-        'USER': 'root',
-        'PASSWORD': 'secret',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'USER': 'flowermaster',
+        'PASSWORD': '$Tr0mberg',
+        'HOST': 'aajciykwlhdj6a.cxzenjemraaz.us-west-2.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
