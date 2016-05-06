@@ -19,6 +19,7 @@ import os
 import sys
 
 sys.path.insert(0, '/opt/python/current/app')
+sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'cv_api.settings'
 
