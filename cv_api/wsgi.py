@@ -17,6 +17,9 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 
 import os
 import sys
+import time
+import traceback
+import signal
 
 sys.path.insert(0, '/opt/python/current/app')
 sys.path.append('/usr/local/lib/python2.7/site-packages')
@@ -24,8 +27,5 @@ sys.path.append('/usr/local/lib/python2.7/site-packages')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'cv_api.settings'
 
 from django.core.wsgi import get_wsgi_application
-try:
-    application = get_wsgi_application()
-    print 'WSGI without exception'
-except Exception:
-    print 'handling WSGI exception'
+
+application = get_wsgi_application()
